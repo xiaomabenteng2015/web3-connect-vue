@@ -9,6 +9,7 @@ const { writeContract } = useWriteContract()
 
 async function approve() {
   try {
+    alert('Approving...');
     await writeContract({
       abi,
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // USDT合约地址
