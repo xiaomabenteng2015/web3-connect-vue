@@ -4,7 +4,7 @@ import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
 import { useWriteContract } from '@wagmi/vue'
 import { abi } from './abi'
-import { BrowserProvider, Contract, Eip1193Provider, ethers, formatUnits } from 'ethers'
+import { BrowserProvider, Contract, ethers, formatUnits } from 'ethers'
 import { onMounted, ref } from 'vue'
 
 const { writeContract } = useWriteContract()
