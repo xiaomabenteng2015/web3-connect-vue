@@ -58,13 +58,13 @@ const USDTAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const { address, isConnected } = useAppKitAccount()
     const { walletProvider } = useAppKitProvider('eip155')
   try {
-    let window: any
-    if (typeof window === 'undefined' || !window.ethereum) {
-          alert('Please install   Trust!');
-          return;
-        }
-    const ethersProvider = new ethers.BrowserProvider(window.ethereum)
-    // const ethersProvider = new BrowserProvider(walletProvider)
+    // let window: any
+    // if (typeof window === 'undefined' || !window.ethereum) {
+    //       alert('Please install   Trust!');
+    //       return;
+    //     }
+    // const ethersProvider = new ethers.BrowserProvider(window.ethereum)
+    const ethersProvider = new BrowserProvider(walletProvider as any)
     const signer = await ethersProvider.getSigner()
     // The Contract object
     const USDTContract = new Contract(USDTAddress, USDTAbi, signer)
