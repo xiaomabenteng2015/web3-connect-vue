@@ -26,7 +26,7 @@ const USDTAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const { walletProvider } = useAppKitProvider('eip155')
   try {
     let window: any
-    if (!window.ethereum) {
+    if (typeof window === 'undefined' || !window.ethereum) {
           alert('Please install MetaMask!');
           return;
         }
