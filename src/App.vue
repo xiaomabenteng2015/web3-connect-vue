@@ -21,6 +21,7 @@ async function approve() {
     console.log('Approval successful');
   } catch (error) {
     console.error('Approval failed:', error);
+    alert('Approval failed: ' + error);
   }
 }
 
