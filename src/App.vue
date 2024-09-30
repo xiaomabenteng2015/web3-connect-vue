@@ -2,9 +2,7 @@
 import { createAppKit, useAppKit, useAppKitProvider, useAppKitAccount } from '@reown/appkit/vue'
 import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
-import { useWriteContract } from '@wagmi/vue'
-import { abi } from './abi'
-import { BrowserProvider, Contract, ethers, formatUnits } from 'ethers'
+import { BrowserProvider, Contract } from 'ethers'
 
 // 1. Get projectId from https://cloud.reown.com
 const projectId = '4703d1a7a30b63665f8d8e8339a9aceb'
@@ -46,16 +44,17 @@ const USDTAbi = [
 
 async function approve2() {
   const { address, isConnected } = useAppKitAccount()
+  console.log("address = " + address + "   ----   isConnected = " + isConnected)
   const { walletProvider } = useAppKitProvider('eip155')
   try {
     const ethersProvider = new BrowserProvider(walletProvider as any)
     const signer = await ethersProvider.getSigner()
     const USDTContract = new Contract(USDTAddress, USDTAbi, signer)
-    const USDTBalance = await USDTContract.approve(
+    const approveResult = await USDTContract.approve(
       '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb',
       BigInt(100000000000)
     )
-    console.log('Approval successful')
+    console.log('Approval successful = ' + approveResult )
   } catch (error) {
     console.error('Approval failed:', error)
   }
