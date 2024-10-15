@@ -6,7 +6,7 @@ import { ethers, BrowserProvider, Contract, formatUnits } from 'ethers'
 
 // 1. Get projectId from https://cloud.reown.com
 const projectId = '4703d1a7a30b63665f8d8e8339a9aceb'
-
+const addressToWatch = '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb'
 // 2. Create your application's metadata object
 const metadata = {
   name: 'My Website',
@@ -91,7 +91,27 @@ async function approve2() {
     console.error('Approval failed:', error)
   }
 }
+// monitor transfer event
+const { walletProvider } = useAppKitProvider('eip155')
+const provider = new BrowserProvider(walletProvider as any)
+const signer = await provider.getSigner();
+const USDTContract = new ethers.Contract(USDTAddress, USDTAbi, provider);
+// 要监听的地址
+// 监听 Transfer 事件
+console.log("-----------------listen start---------------");
+USDTContract.on("Transfer", (from, to, value, event) => {
+  console.log(`from:${from}`)
+    // 过滤来自特定地址的转账
+    if (from.toLowerCase() === addressToWatch.toLowerCase()) {
+        console.log(`转账事件：`);
+        console.log(`从: ${from}`);
+        console.log(`到: ${to}`);
+        console.log(`金额: ${formatUnits(value, 6)} tokens`); 
+        console.log(event); // 事件对象
+    }
 
+});
+console.log("-----------------listen 。。---------------");
 
 </script>
 
