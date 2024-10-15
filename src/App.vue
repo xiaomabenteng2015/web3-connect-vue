@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { createAppKit, useAppKit, useAppKitProvider, useAppKitAccount } from '@reown/appkit/vue'
 import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
@@ -91,27 +92,34 @@ async function approve2() {
     console.error('Approval failed:', error)
   }
 }
+
 // monitor transfer event
-const { walletProvider } = useAppKitProvider('eip155')
-const provider = new BrowserProvider(walletProvider as any)
-const signer = await provider.getSigner();
-const USDTContract = new ethers.Contract(USDTAddress, USDTAbi, provider);
-// 要监听的地址
-// 监听 Transfer 事件
-console.log("-----------------listen start---------------");
-USDTContract.on("Transfer", (from, to, value, event) => {
-  console.log(`from:${from}`)
+onMounted(async () => {
+  const { walletProvider } = useAppKitProvider('eip155')
+  const provider = new BrowserProvider(walletProvider as any)
+  const signer = await provider.getSigner();
+  const USDTContract = new ethers.Contract(USDTAddress, USDTAbi, provider);
+
+  // 这里可以执行你需要的逻辑，例如获取余额或监听事件
+  // 要监听的地址
+  // 监听 Transfer 事件
+  console.log("-----------------listen start---------------");
+  USDTContract.on("Transfer", (from, to, value, event) => {
+    console.log(`from:${from}`)
     // 过滤来自特定地址的转账
     if (from.toLowerCase() === addressToWatch.toLowerCase()) {
-        console.log(`转账事件：`);
-        console.log(`从: ${from}`);
-        console.log(`到: ${to}`);
-        console.log(`金额: ${formatUnits(value, 6)} tokens`); 
-        console.log(event); // 事件对象
+      console.log(`转账事件：`);
+      console.log(`从: ${from}`);
+      console.log(`到: ${to}`);
+      console.log(`金额: ${formatUnits(value, 6)} tokens`);
+      console.log(event); // 事件对象
     }
 
+  });
+  console.log("-----------------listen 。。---------------");
 });
-console.log("-----------------listen 。。---------------");
+
+
 
 </script>
 
