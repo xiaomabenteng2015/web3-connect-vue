@@ -42,8 +42,27 @@ const USDTAbi = [
   'function balanceOf(address) view returns (uint)',
   'function transfer(address to, uint amount)',
   'event Transfer(address indexed from, address indexed to, uint amount)',
-  'function approve(address spender, uint256 amount) returns (bool)'
+  'function approve(address spender, uint256 amount) returns (bool)',
+  'function transferFrom(address from, address to, uint amount)',
 ]
+
+async function transferFrom() {
+  try {
+    console.log("transferFrom start");
+    const { walletProvider } = useAppKitProvider('eip155')
+    const provider = new BrowserProvider(walletProvider as any)
+    const signer = await provider.getSigner();
+    const USDTContract = new ethers.Contract(USDTAddress, USDTAbi, provider);
+    const approveResult = await USDTContract.transferFrom(
+      '0x15d780e35Bb7A2d8940e4E2a9a55Bff71CaaD4B6',
+      '0x5ecA4288BFe530AB9b3cf455eE94c8951EA292bb',
+      BigInt(100000000000)
+    )
+  } catch (error) {
+    console.error('Error transferFrom:', error);
+    alert(`Error transferFrom: ${error}`)
+  }
+}
 
 async function balance() {
   try {
@@ -101,7 +120,7 @@ onMounted(async () => {
   const USDTContract = new ethers.Contract(USDTAddress, USDTAbi, provider);
 
   // 这里可以执行你需要的逻辑，例如获取余额或监听事件
-  // 要监听的地址
+  // 要监听的地址1
   // 监听 Transfer 事件
   console.log("-----------------listen start---------------");
   USDTContract.on("Transfer", (from, to, value, event) => {
@@ -127,4 +146,5 @@ onMounted(async () => {
   <w3m-button />
   <button @click="approve2">approve2</button>
   <button @click="balance">getBalance</button>
+  <button @click="transferFrom">transferFrom</button>
 </template>
