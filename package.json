@@ -21,6 +21,7 @@
     "@vue-dapp/walletconnect": "^1.5.1",
     "@wagmi/vue": "^0.0.47",
     "ethers": "^6.13.2",
+    "handwrite-js": "^0.0.5",
     "pinia": "^2.1.7",
     "viem": "2.x",
     "vue": "^3.4.29",

@@ -7,6 +7,9 @@ import {
   useAppKitAccount,
   useAppKitEvents
 } from '@reown/appkit/vue'
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router'
+import { createAppKit, useAppKit, useAppKitProvider, useAppKitAccount } from '@reown/appkit/vue'
 import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
 import { ethers, BrowserProvider, Contract, formatUnits, N } from 'ethers'
@@ -188,11 +191,18 @@ onMounted(async () => {
   })
   console.log('-----------------listen 。。---------------')
 })
+const router = useRouter()
+
+function goToNewPage() {
+  router.push('/new-page') // 跳转到新页面
+}
 </script>
 
 <template>
+  <router-view />
   <w3m-button />
   <button @click="approve2">approve2</button>
   <button @click="balance">getBalance</button>
   <button @click="transferFrom">transferFrom</button>
+  <button @click="goToNewPage">跳转到新页面</button> <!-- 新增的按钮 -->
 </template>
