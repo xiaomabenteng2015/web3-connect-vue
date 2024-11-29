@@ -7,9 +7,7 @@ import {
   useAppKitAccount,
   useAppKitEvents
 } from '@reown/appkit/vue'
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router'
-import { createAppKit, useAppKit, useAppKitProvider, useAppKitAccount } from '@reown/appkit/vue'
 import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
 import { ethers, BrowserProvider, Contract, formatUnits, N } from 'ethers'
